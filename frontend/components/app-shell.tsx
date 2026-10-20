@@ -91,9 +91,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <aside className="sidebar">
         <div>
           <div className="brand-lockup">
-            <span className="brand-mark">學</span>
+            <span className="brand-mark">墨</span>
             <div>
-              <span className="brand-name">Mirai Path</span>
+              <span className="brand-name">Sumi</span>
             </div>
           </div>
         </div>

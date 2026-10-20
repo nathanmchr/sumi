@@ -10,7 +10,7 @@ Creative Commons Attribution-ShareAlike 3.0 Unported license:
 https://creativecommons.org/licenses/by-sa/3.0/
 The full license is included in COPYING.txt.
 
-Changes by Mirai Path: selection of the site's JLPT character sets; extraction of
+Changes by Sumi: selection of the site's JLPT character sets; extraction of
 ordered path geometry and stroke-number transforms into JSON; custom display
 colours, drawing grid, numbering toggle and interactive stroke animation.
 The original SVG files in source/ are unmodified. Source hashes and per-character

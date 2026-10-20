@@ -1,6 +1,11 @@
-# Mirai Path
+# Sumi 墨
 
 Plateforme web d’apprentissage du japonais pensée comme un vrai produit éducatif: niveaux JLPT séparés par catégorie, furigana configurable, fiches kanji détaillées, et révision espacée simple à maintenir.
+
+> **Contenu non inclus.** Le catalogue de cours (CSV consolidés, leçons, exercices,
+> compléments et audits dans `contenu csv/`, `backend/app/data/` et `docs/*.json|csv`)
+> ainsi que les audios générés restent privés et ne sont pas publiés dans ce dépôt.
+> Le code est fourni tel quel ; `backend/seed/` contient quelques lignes d’exemple.
 
 ## Architecture générale
 

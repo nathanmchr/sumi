@@ -10,7 +10,7 @@ const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-ui" });
 const notoSansJP = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-jp" });
 
 export const metadata: Metadata = {
-  title: "Mirai Path",
+  title: "Sumi 墨",
   description: "JLPT learning with spaced repetition, kanji detail pages, and a structured study flow.",
 };
 

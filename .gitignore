@@ -19,7 +19,7 @@ frontend/output/
 .playwright-cli/
 .serena/
 
-# Contains a personal access token; never commit
+# Local Kokoro scratch script
 test.py
 
 # Course content and curated data: the app's core value, kept private and off GitHub

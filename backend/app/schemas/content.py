@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -127,6 +127,7 @@ class DashboardStatsOut(BaseModel):
     learned_items: int
     due_reviews: int
     streak_days: int
+    study_days: list[date] = Field(default_factory=list)
     estimated_session_minutes: int
     progression_by_category: dict[str, float]
     recommendation: str

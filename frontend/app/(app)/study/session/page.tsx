@@ -30,6 +30,8 @@ function QuizSession() {
   const [selected, setSelected] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<"request" | "answer" | "expired" | "resume" | "begin" | null>(null);
+  // Outcomes answered on this page, oldest first; earlier answers of a resumed session are unknown.
+  const [outcomes, setOutcomes] = useState<boolean[]>([]);
   const busy = useRef(false);
   const choiceLock = useRef<string | null>(null);
   const feedbackRef = useRef<HTMLDivElement>(null);
@@ -61,6 +63,28 @@ function QuizSession() {
   }, [sid, turn?.session_id]);
 
   useEffect(() => { if (result) feedbackRef.current?.focus(); }, [result]);
+  useEffect(() => { setOutcomes([]); }, [turn?.session_id]);
+
+  // 1–9 picks a choice, Enter begins or continues. Controls with their own keyboard behaviour keep it.
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return;
+      if (event.target instanceof HTMLElement && event.target.closest("input, select, textarea, button, a")) return;
+      if (!question || turn?.ended) return;
+      if (event.key === "Enter") {
+        if (introducing) { event.preventDefault(); void begin(); }
+        else if (result) { event.preventDefault(); void advance(); }
+        return;
+      }
+      const index = Number(event.key) - 1;
+      if (!introducing && !result && Number.isInteger(index) && index >= 0 && index < question.choices.length) {
+        event.preventDefault();
+        void choose(question.choices[index].id);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   async function advance() {
     if (busy.current) return;
@@ -116,6 +140,7 @@ function QuizSession() {
         correct_answers: previous.correct_answers + Number(answer.correct),
         question: { ...question, result: answer },
       }));
+      setOutcomes(previous => [...previous, answer.correct]);
       void mutate(key => typeof key === "string" ? ["dashboard", "recommendation"].includes(key) : Array.isArray(key) && ["due-items", "kanji-detail", "grammar-detail"].includes(key[0]));
     } catch (failure) {
       setError(failure instanceof ApiError && failure.status === 409 ? "expired" : "answer");
@@ -143,11 +168,18 @@ function QuizSession() {
 
     {turn && !turn.ended && question && <article className="panel stack quiz-card" aria-busy={pending}>
       <div className="session-progress">
-        <progress value={turn.completed_items} max={turn.planned_items} aria-label={t("study.plan")} />
+        {turn.planned_items <= 40 ? <ol className="quiz-squares" role="progressbar" aria-label={t("study.plan")}
+          aria-valuemin={0} aria-valuemax={turn.planned_items} aria-valuenow={turn.completed_items}>
+          {Array.from({ length: turn.planned_items }, (_, index) => {
+            const known = index - (turn.completed_items - outcomes.length);
+            const state = index < turn.completed_items ? (known >= 0 && !outcomes[known] ? "miss" : "done") : index === turn.completed_items ? "current" : "todo";
+            return <li key={index} data-state={state} aria-hidden="true" />;
+          })}
+        </ol> : <progress value={turn.completed_items} max={turn.planned_items} aria-label={t("study.plan")} />}
         <span>{t("quiz.progress", { count: turn.completed_items, total: turn.planned_items })}</span>
       </div>
       {introducing && <div className="quiz-discovery-heading"><h3>{t("quiz.newWord")}</h3><p className="muted">{t("quiz.discoverFirst")}</p></div>}
-      <div className="quiz-prompt">
+      <div className={`quiz-prompt${question.kind === "cloze" || question.content_type === "grammar" ? "" : " quiz-prompt--word"}`}>
         <p className="context-label">{t(`nav.${question.content_type}`)} · {question.jlpt_level_code}</p>
         <h2 lang="ja" ref={questionHeadingRef} tabIndex={-1}>{question.furigana_segments.length ? <FuriganaText segments={question.furigana_segments} mode={furiganaMode} helper={currentSession?.settings.furigana_helper_enabled} /> : <ClozeText text={question.title} blankLabel={locale === "fr" ? "À compléter" : "Fill in the blank"} />}</h2>
         {question.content_type === "kanji" && question.reading && furiganaMode !== "hidden" && <p className={`quiz-reading quiz-reading--${furiganaMode}`} tabIndex={furiganaMode === "hover" ? 0 : undefined} lang="ja">{question.reading}</p>}
@@ -160,16 +192,17 @@ function QuizSession() {
           <strong lang="ja">{formatPowers(question.introduction.example.text)}</strong>
           <p lang={question.locale}>{formatPowers(question.introduction.example.translation)}</p>
         </div>}
-        <button type="button" className="button button--accent" disabled={pending} onClick={begin}>{t("quiz.ready")}</button>
+        <button type="button" className="button button--accent" disabled={pending} onClick={begin}>{t("quiz.ready")}<span className="kbd" aria-hidden="true">↵</span></button>
       </div>}
       {!introducing && <fieldset className="quiz-choices" disabled={Boolean(selected) || pending}>
         <legend lang={question.locale}>{question.instruction}</legend>
-        {question.choices.map(choice => {
+        {question.choices.map((choice, index) => {
           const correct = result?.correct_option_id === choice.id;
           const wrong = Boolean(result && !result.correct && result.selected_option_id === choice.id);
           return <button key={choice.id} type="button" lang={question.kind === "cloze" ? "ja" : question.locale}
             className={`quiz-choice${correct ? " is-correct" : wrong ? " is-wrong" : selected === choice.id ? " is-selected" : ""}`}
             onClick={() => choose(choice.id)} aria-pressed={selected === choice.id}>
+            <span className="kbd" aria-hidden="true">{index + 1}</span>
             <span>{formatPowers(choice.label)}</span>
             {correct && <small lang={locale}>✓ {t("quiz.solution")}</small>}
             {wrong && <small lang={locale}>✕ {t("quiz.chosen")}</small>}
@@ -185,8 +218,9 @@ function QuizSession() {
             : !result.correct && <p className="muted" lang={locale}>{t("quiz.exampleMissing")}</p>}
         </div>
         <MemoryBar memory={result.memory} stability={result.stability} status={result.status} />
-        <button className="button button--accent" disabled={pending} onClick={advance}>{t("quiz.next")}</button>
+        <button className="button button--accent" disabled={pending} onClick={advance}>{t("quiz.next")}<span className="kbd" aria-hidden="true">↵</span></button>
       </div>}
+      {!result && !introducing && <p className="quiz-keys" aria-hidden="true">{t("quiz.keys", { count: question.choices.length })}</p>}
     </article>}
 
     {turn?.ended && <section className="panel stack">

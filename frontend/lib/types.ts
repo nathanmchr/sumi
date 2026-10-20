@@ -133,6 +133,7 @@ export type DashboardStats = {
   learned_items: number;
   due_reviews: number;
   streak_days: number;
+  study_days: string[];
   estimated_session_minutes: number;
   progression_by_category: Record<string, number>;
   recommendation: string;

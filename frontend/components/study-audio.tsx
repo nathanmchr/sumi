@@ -50,11 +50,11 @@ export function StudyAudioToggle({ enabled, onChange }: { enabled: boolean; onCh
     </svg>
   </button>
     <style jsx>{`
-      .study-audio-toggle { appearance: none; -webkit-appearance: none; display: inline-grid; place-items: center; width: 44px; min-width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; box-shadow: none; color: var(--muted, #626e75); cursor: pointer; flex-shrink: 0; }
+      .study-audio-toggle { appearance: none; -webkit-appearance: none; display: inline-grid; place-items: center; width: 44px; min-width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; box-shadow: none; color: var(--muted); cursor: pointer; flex-shrink: 0; }
       .study-audio-toggle svg { display: block; width: 22px; height: 22px; flex: none; }
-      .study-audio-toggle[aria-pressed="true"] { color: var(--focus, #147d6a); }
-      .study-audio-toggle:hover { background: var(--mint, #e0f3e9); }
-      .study-audio-toggle:focus-visible { outline: 2px solid var(--focus, #147d6a); outline-offset: 2px; }
+      .study-audio-toggle[aria-pressed="true"] { color: var(--focus); }
+      .study-audio-toggle:hover { background: var(--tint); }
+      .study-audio-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
     `}</style>
   </>;
 }

@@ -1,6 +1,7 @@
 .player { width: 100%; max-width: 280px; min-width: 0; }
-.canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--bg); }
-.grid { fill: none; stroke: var(--line); stroke-width: .3; opacity: .65; }
+.canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; padding: 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); }
+/* 田字格 practice-sheet guides, as in the kanji catalogue. */
+.grid { fill: none; stroke: var(--shu); stroke-width: .35; stroke-dasharray: 1.6 1.6; opacity: .35; }
 .ghost, .ink { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .ghost { stroke: var(--progress-track); }
 .ink { stroke: var(--text); }

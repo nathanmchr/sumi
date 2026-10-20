@@ -6,9 +6,20 @@ import { dashboard, dueItems, session, sessionRecommendation } from "@/lib/api";
 import { contentHref } from "@/lib/content";
 import { ProgressBar } from "@/components/progress-bar";
 import { StatCard } from "@/components/stat-card";
+import { StudyStamps } from "@/components/study-stamps";
 import { useI18n } from "@/lib/i18n";
 import { formatLevelRange } from "@/lib/jlpt";
 import { formatPowers } from "@/lib/format-text";
+
+// "10月20日火曜日", with digit runs marked so they sit upright in vertical text.
+function JapaneseDate() {
+  const parts = new Intl.DateTimeFormat("ja-JP", { month: "long", day: "numeric", weekday: "long" }).format(new Date()).split(/(\d+)/);
+  return (
+    <p className="dashboard-date" lang="ja" aria-hidden="true" suppressHydrationWarning>
+      {parts.map((part, index) => /^\d+$/.test(part) ? <span key={index} className="tcy">{part}</span> : part)}
+    </p>
+  );
+}
 
 export default function DashboardPage() {
   const { locale, t } = useI18n();
@@ -28,8 +39,9 @@ export default function DashboardPage() {
   return (
     <div className="dashboard-page dashboard-bento">
       <section className="bento-tile bento-tile--hero">
+        <JapaneseDate />
         <div className="dashboard-hero__copy">
-          <p className="eyebrow">{t("dashboard.today")}</p>
+          <p className="eyebrow"><span lang="ja">今日</span> · {t("dashboard.today")}</p>
           <h1>{t("dashboard.title")}</h1>
           <p>{t("dashboard.intro")}</p>
           <div className="dashboard-hero__actions">
@@ -53,7 +65,11 @@ export default function DashboardPage() {
       <section className="bento-tile bento-tile--metrics dashboard-metrics" aria-label={t("dashboard.learned")}>
         <StatCard label={t("dashboard.learned")} value={stats?.learned_items ?? "—"} hint={t("dashboard.learnedHint")} tone="accent" />
         <StatCard label={t("dashboard.due")} value={stats?.due_reviews ?? "—"} hint={t("dashboard.dueHint")} />
-        <StatCard label={t("dashboard.streak")} value={`${stats?.streak_days ?? "—"} ${t("dashboard.days")}`} hint={t("dashboard.streakHint")} tone="success" />
+        <section className="stat-card streak-card">
+          <p className="stat-card__label">{t("dashboard.streak")}</p>
+          <div className="stat-card__value">{stats?.streak_days ?? "—"} <span className="session-unit">{t(stats?.streak_days === 1 ? "dashboard.day" : "dashboard.days")}</span></div>
+          <StudyStamps studyDays={stats?.study_days ?? []} />
+        </section>
       </section>
 
       <section className="bento-tile bento-tile--progress">
@@ -107,7 +123,7 @@ export default function DashboardPage() {
         </div>
         {dueError ? <p className="muted">{t("catalog.loadError")}</p> : !due ? <p className="muted">{t("catalog.loading")}</p> : due.length === 0 ? (
           <div className="queue-empty">
-            <span className="queue-empty__mark" aria-hidden="true">✓</span>
+            <span className="queue-empty__mark" aria-hidden="true">済</span>
             <p>{t("dashboard.emptyQueue")}</p>
             <Link className="button button--small" href="/study/vocabulary">{t("nav.vocabulary")}<span aria-hidden="true">→</span></Link>
           </div>

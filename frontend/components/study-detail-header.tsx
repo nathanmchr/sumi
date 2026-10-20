@@ -7,6 +7,8 @@ import type { ContentType, JLPTLevelCode, ReviewStatus } from "@/lib/types";
 type Props = {
   category: ContentType;
   item?: { jlpt_level_code: JLPTLevelCode; mastery: number; status: ReviewStatus };
+  /** Japanese headword shown as the page title; the category becomes the eyebrow. */
+  headword?: string;
 };
 
 const backLabels = {
@@ -15,13 +17,14 @@ const backLabels = {
   grammar: "detail.backGrammar",
 } as const;
 
-export function StudyDetailHeader({ category, item }: Props) {
+export function StudyDetailHeader({ category, item, headword }: Props) {
   const { t } = useI18n();
 
   return (
     <header className="page-header">
       <div>
-        <h1>{t(`nav.${category}`)}</h1>
+        {headword ? <p className="eyebrow">{t(`nav.${category}`)}</p> : null}
+        {headword ? <h1 className="detail-headword" lang="ja">{headword}</h1> : <h1>{t(`nav.${category}`)}</h1>}
         {item ? (
           <div className="detail-header__meta">
             <span className="tag">JLPT {item.jlpt_level_code}</span>

@@ -30,23 +30,23 @@ export default function KanjiDetailPage() {
 
   return (
     <div className="stack">
-      <StudyDetailHeader category="kanji" item={item} />
+      <StudyDetailHeader category="kanji" item={item} headword={item?.character} />
 
       {item ? (
         <article className="detail-card">
           <div className="detail-card__surface detail-card__surface--kanji detail-card__surface--strokes">
             <KanjiStrokePlayer key={item.id} character={item.character} level={item.jlpt_level_code} />
             <div className="kanji-detail-identity">
-            {item.meanings.length > 0 ? <p>{formatPowers(item.meanings.join(" / "))}</p> : null}
+            {item.meanings.length > 0 ? <p className="kanji-meanings">{formatPowers(item.meanings.join(" / "))}</p> : null}
             {hasReadings ? (
-              <div className="tag-row">
-                {item.onyomi.map((reading) => (
-                  <span key={reading} className="tag">{reading}</span>
-                ))}
-                {item.kunyomi.map((reading) => (
-                  <span key={reading} className="tag">{reading}</span>
-                ))}
-              </div>
+              <dl className="kanji-readings">
+                {item.onyomi.length > 0 ? (
+                  <div><dt><span lang="ja" aria-hidden="true">音</span> {t("detail.onyomi")}</dt><dd lang="ja">{item.onyomi.join("、")}</dd></div>
+                ) : null}
+                {item.kunyomi.length > 0 ? (
+                  <div><dt><span lang="ja" aria-hidden="true">訓</span> {t("detail.kunyomi")}</dt><dd lang="ja">{item.kunyomi.join("、")}</dd></div>
+                ) : null}
+              </dl>
             ) : null}
             {item.mnemonic ? <p className="muted">{formatPowers(item.mnemonic)}</p> : null}
             </div>

@@ -61,9 +61,9 @@ export function KanjiPlayerControls(props: Props) {
     <style jsx>{`
       .transport { padding-top: 20px; width: 100%; min-width: 0; }
       .primary { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: center; gap: 16px; }
-      .play { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 44px; padding: 0 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--accent); color: var(--bg-ink, #07251f); box-shadow: 0 4px 0 var(--line); font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+      .play { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 44px; padding: 0 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--accent); color: var(--on-accent); font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
       .play:hover { filter: brightness(.96); }
-      .play:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--line); }
+      .play:active { transform: translateY(1px); }
       .play svg, .tool svg { flex: none; display: block; }
       .speed { display: flex; flex-direction: column; justify-content: center; min-width: 0; height: 44px; }
       .speed-caption { display: flex; justify-content: space-between; gap: 4px; color: var(--muted); font-size: .7rem; line-height: 16px; font-variant-numeric: tabular-nums; }
@@ -75,8 +75,8 @@ export function KanjiPlayerControls(props: Props) {
       .speed input::-moz-range-thumb { width: 12px; height: 12px; border: 2px solid var(--focus); border-radius: 50%; background: var(--paper); box-shadow: none; }
       .secondary { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--line); }
       .group { display: flex; align-items: center; gap: 4px; }
-      .tool { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 12px; background: transparent; color: var(--muted); cursor: pointer; }
-      .tool:hover:not(:disabled), .tool[aria-pressed="true"] { background: var(--mint); color: var(--focus); }
+      .tool { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); cursor: pointer; }
+      .tool:hover:not(:disabled), .tool[aria-pressed="true"] { background: var(--tint); color: var(--focus); }
       .tool:disabled { opacity: .3; cursor: default; }
       button:focus-visible, input:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
       @media (prefers-reduced-motion: reduce) { .play:active { transform: none; } }

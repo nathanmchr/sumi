@@ -3,7 +3,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import styles from "./completion-confetti.module.css";
 
-const colors = ["var(--accent)", "var(--accent-2)", "var(--accent-3)", "var(--focus)"];
+const colors = ["var(--sumi)", "var(--shu)", "var(--ok)", "var(--line-strong)"];
 const pieces = Array.from({ length: 56 }, (_, index) => ({
   "--left": `${(index * 47) % 100}%`,
   "--drift": `${((index * 31) % 161) - 80}px`,

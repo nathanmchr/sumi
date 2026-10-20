@@ -1,0 +1,3 @@
+# Dependencies are maintained in backend/pyproject.toml.
+# Install into backend/.venv; see README.md.
+-e ./backend

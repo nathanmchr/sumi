@@ -1,0 +1,15 @@
+.player { width: 100%; max-width: 280px; min-width: 0; }
+.canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--bg); }
+.grid { fill: none; stroke: var(--line); stroke-width: .3; opacity: .65; }
+.ghost, .ink { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.ghost { stroke: var(--progress-track); }
+.ink { stroke: var(--text); }
+.ink .active { stroke: var(--focus); }
+.numbers { font-family: var(--font-body); font-size: 7px; fill: var(--muted); stroke: var(--paper); stroke-width: 1.5px; paint-order: stroke; stroke-linejoin: round; }
+.numbers .activeNumber { fill: var(--focus); font-weight: 700; }
+.credit { margin: 12px 0 0; color: var(--muted); font-size: .65rem; line-height: 1.6; text-align: center; }
+.credit a { text-decoration: none; text-underline-offset: 3px; }
+.credit a:hover { text-decoration: underline; }
+.note { font-size: .8rem; color: var(--muted); margin: 8px 0; }
+.fallback { min-height: 280px; }
+@media (max-width: 680px) { .player { margin-inline: auto; max-width: 260px; } }

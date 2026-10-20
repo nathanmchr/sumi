@@ -1,0 +1,33 @@
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.piece {
+  position: absolute;
+  top: -16px;
+  left: var(--left);
+  width: 7px;
+  height: 11px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: fall var(--duration) cubic-bezier(.2, .55, .55, 1) var(--delay) both;
+}
+
+.piece:nth-child(3n) { width: 8px; height: 8px; border-radius: 50%; }
+.piece:nth-child(4n) { width: 5px; height: 13px; }
+
+@keyframes fall {
+  0% { opacity: 0; transform: translate3d(0, -16px, 0) rotate(0); }
+  8% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(var(--drift), 105dvh, 0) rotate(var(--rotation)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti { display: none; }
+  .piece { animation: none; }
+}

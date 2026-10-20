@@ -1,0 +1,33 @@
+.local/
+.env
+__pycache__/
+*.py[cod]
+.venv/
+frontend/.next/
+frontend/.next-dev/
+frontend/node_modules/
+audio/vocabulary-chirp3-test/
+
+# Machine-local and generated artifacts
+.DS_Store
+*.egg-info/
+*.tsbuildinfo
+hf_cache/
+audio/
+output/
+frontend/output/
+.playwright-cli/
+.serena/
+
+# Contains a personal access token; never commit
+test.py
+
+# Course content and curated data: the app's core value, kept private and off GitHub
+contenu csv/
+backend/app/data/
+docs/*.json
+docs/*.csv
+docs/n2-themes-proposal.md
+docs/n5-lessons.md
+tasks/
+backend/.coverage

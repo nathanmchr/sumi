@@ -1,0 +1,29 @@
+.selector { min-width: 0; padding-block: 4px 8px; }
+.heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; font-size: .9rem; margin-bottom: 18px; }
+.heading .badge { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 8px; max-width: 100%; margin-left: auto; padding: 8px 12px; border-radius: 12px; font-size: .72rem; font-weight: 700; line-height: 1.5; }
+.badge > span { white-space: nowrap; }
+.slider { position: relative; height: 40px; margin-inline: 7px; }
+.track { position: absolute; top: 17px; left: 7.5px; right: 7.5px; height: 6px; border-radius: 99px; background: var(--progress-track); }
+/* Meet the diameter of each half-circle, including beyond the rail at N5/N1. */
+.track::before { content: ""; position: absolute; inset-block: 0; left: calc(var(--range-start) - 2px); right: calc(100% - var(--range-end) - 2px); border-radius: inherit; background: var(--accent); }
+.slider input { appearance: none; position: absolute; inset: 0; width: 100%; height: 40px; margin: 0; background: transparent; pointer-events: none; }
+.slider input::-webkit-slider-runnable-track { height: 6px; background: transparent; }
+.slider input::-webkit-slider-thumb { appearance: none; box-sizing: border-box; pointer-events: auto; cursor: grab; width: 15px; height: 28px; margin-top: -11px; border: 0; border-radius: 0; background: transparent; transform: translateX(var(--handle-offset)); }
+.slider input::-moz-range-track { height: 6px; background: transparent; }
+.slider input::-moz-range-thumb { box-sizing: border-box; pointer-events: auto; cursor: grab; width: 15px; height: 28px; border: 0; border-radius: 0; background: transparent; transform: translateX(var(--handle-offset)); }
+.slider input:active::-webkit-slider-thumb { cursor: grabbing; }
+.slider input:focus-visible { z-index: 2; outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 8px; }
+.slider input:disabled::-webkit-slider-thumb { cursor: default; }
+.slider input:disabled::-moz-range-thumb { cursor: default; }
+/* Complementary halves stay separately draggable, including at the same level. */
+.minimum { --handle-offset: -8.5px; }
+.maximum { --handle-offset: 8.5px; }
+/* The circular SVG stroke has uniform thickness; transparent native thumbs
+   above remain responsible for keyboard, pointer and touch interaction. */
+.handles { position: absolute; inset: 0 7.5px; pointer-events: none; }
+.handle { position: absolute; top: 6px; width: 15px; height: 28px; fill: var(--paper); stroke: var(--focus); stroke-width: 2; stroke-linejoin: round; }
+.handleMinimum { left: var(--range-start); transform: translateX(-16px); }
+.handleMaximum { left: var(--range-end); transform: translateX(1px); }
+.ticks { position: relative; height: 1.6em; margin-top: 8px; margin-inline: 14.5px; color: var(--muted); font-size: .72rem; }
+.ticks > span { position: absolute; transform: translateX(-50%); }
+.ticks [data-selected="true"] { color: var(--focus); font-weight: 800; }

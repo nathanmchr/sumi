@@ -1,0 +1,50 @@
+[project]
+name = "apprentissage-langue-backend"
+version = "0.1.0"
+description = "FastAPI backend for a Japanese learning platform"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.30.0",
+  "sqlalchemy>=2.0.35",
+  "psycopg[binary]>=3.2.1",
+  "alembic>=1.13.2",
+  "pydantic-settings>=2.5.2",
+  "pydantic[email]>=2.9.2",
+  "python-jose[cryptography]>=3.3.0",
+  "passlib[bcrypt]>=1.7.4",
+  "bcrypt>=4.0.1,<4.1.0",
+  "python-multipart>=0.0.9",
+  "fsrs>=6,<7",
+  "kokoro>=0.9.4,<0.10",
+  "misaki[ja]>=0.9.4,<0.10",
+  "soundfile>=0.14,<1",
+  "ipython>=9,<10",
+  "python-dotenv>=1,<2",
+  "google-cloud-texttospeech>=2.29,<3",
+  "jaconv>=0.5,<0.6",
+]
+
+[tool.uvicorn]
+factory = false
+
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "coverage>=7.16.0",
+    "httpx>=0.28.1",
+]
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.package-data]
+app = ["data/vocabulary_audio_aliases.csv"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+exclude = ["alembic*", "seed*", "scripts*"]
